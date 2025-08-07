@@ -6,25 +6,27 @@ import { NextResponse } from "next/server";
 
 
 
-export async function POST(request){
+export async function POST(request) {
     try {
-        
-        const {userId} = getAuth(request)
+
+        const { userId } = getAuth(request)
         const { address, items } = await request.json();
 
-        if (!address || items.length === 0){
-            return NextResponse.json({ success: false, message: "Invalid data"});
+        if (!address || items.length === 0) {
+            return NextResponse.json({ success: false, message: "Invalid data" });
         }
 
         // calculate amount using items
-        const amount = await items.reduce(async (acc, item) => {
+        let amount = 0;
+        for (const item of items) {
             const product = await Product.findById(item.product);
-            return acc + product.offerPrice * item.quantity;
-        }, 0)
+            amount += product.offerPrice * item.quantity;
+        }
+
 
         await inngest.send({
             name: 'order/created',
-            data:{
+            data: {
                 userId,
                 address,
                 items,
@@ -38,11 +40,11 @@ export async function POST(request){
         user.cartItems = {}
         await user.save()
 
-        return NextResponse.json ({ success: true, message: "Order Placed Successfully"})
+        return NextResponse.json({ success: true, message: "Order Placed Successfully" })
 
 
     } catch (error) {
         console.log(error);
-         return NextResponse.json ({ success: false, message: error.message})
+        return NextResponse.json({ success: false, message: error.message })
     }
 }
