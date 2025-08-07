@@ -9,6 +9,8 @@ const OrderSummary = () => {
   const { currency, router, getCartCount, getCartAmount, getToken, user, cartItems, setCartItems } = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  console.log(cartItems);
+  
 
   const [userAddresses, setUserAddresses] = useState([]);
 
@@ -45,7 +47,6 @@ const OrderSummary = () => {
 
       let cartItemsArray = Object.keys(cartItems).map((key)=> ({product:key, quantity: cartItems[key]}))
       cartItemsArray = cartItemsArray.filter(item => item.quantity > 0)
-
       if (cartItemsArray.length === 0) {
         return toast.error("Cart is empty");
       }

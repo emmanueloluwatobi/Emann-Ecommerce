@@ -69,20 +69,20 @@ export const syncUserDeletion = inngest.createFunction(
 )
 
 // Inngest Function to create user's order in database
-export const createuserOrder = inngest.createFunction(
+
+export const createUserOrder = inngest.createFunction(
     {
         id: 'create-user-order',
-        batchEvents: {
+        batchEvents:{
             maxSize: 5,
             timeout: '5s'
         }
     },
     {event: 'order/created'},
-    async ({events}) =>{
-        console.log("📦 Orders Received by Inngest:", events);
+    async ({events}) => {
 
-        const orders = events.map((event)=>{
-            return{
+        const orders = events.map((event)=> {
+            return {
                 userId: event.data.userId,
                 items: event.data.items,
                 amount: event.data.amount,
@@ -90,10 +90,11 @@ export const createuserOrder = inngest.createFunction(
                 date: event.data.date
             }
         })
-        await connectDB()
-        await Order.insertMany(orders);
 
-        return { success: true, processed: orders.length };
+        await connectDB()
+        await Order.insertMany(orders)
+
+        return { success: true, message: "Orders created successfully" };
 
     }
 )
