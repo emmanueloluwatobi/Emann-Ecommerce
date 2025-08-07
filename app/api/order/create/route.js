@@ -37,7 +37,7 @@ export async function POST(request){
         user.cartItems = {}
         await user.save()
 
-        return NextResponse.json ({ success: true, message: "Order Placed"})
+        return NextResponse.json ({ success: true, message: "Order Placed Successfully"})
 
 
     } catch (error) {
