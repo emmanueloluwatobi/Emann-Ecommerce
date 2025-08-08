@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
     }],
     amount: { type: Number, required: true },
     address: { type: String, required: true, ref: "address" },
-    satus: { type: String, default: "Order Placed", require: true },
+    status: { type: String, default: "Order Placed", require: true },
     date: { type: Number, required: true },
 
 })
